@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array of Two Rectangular Detectors for Localization of Radioactive Sources</title>
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    <h1>Array of Two Rectangular Detectors for Localization of Radioactive Sources</h1>
+    <p><a href="https://drive.google.com/file/d/1H_5ltM4buZa3dRWnRMHdPNetxUZY9eSp/view?usp=sharing" target="_blank">Directional model and its parameters</a></p>
+    <p>Enter the coefficients for the model:</p>
+    <label for="a-input">a: </label>
+    <input type="number" id="a-input" placeholder="Enter a" step="any" value="10">
+    <label for="b-input">b: </label>
+    <input type="number" id="b-input" placeholder="Enter b" step="any" value="10">
+    <label for="w-input">w: </label>
+    <input type="number" id="w-input" placeholder="Enter w" step="any" value="7.5">
+    <label for="h-input">h: </label>
+    <input type="number" id="h-input" placeholder="Enter h" step="any" value="6">
+    <button id="plot-button">Plot Model</button>
+    <div id="plot"></div>
+
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <py-config>
+        packages = ["matplotlib"]
+    </py-config>
+    <py-script>
+        import micropip
+        import asyncio
+        from js import console, document, fetch
+        from pyodide.ffi import create_proxy
+        import matplotlib.pyplot as plt
+
+        async def load_script(url):
+            response = await fetch(url)
+            if not response.ok:
+                raise RuntimeError(f"Failed to fetch {url}: {response.status}")
+            script_content = await response.text()
+            exec(script_content, globals())
+
+        async def main():
+            await micropip.install("matplotlib")
+            await load_script('2x1_rectangularModel.py')
+            console.log("2x1_rectangularModel module loaded.")
+            parameterPlotting = globals()['parameterPlotting']
+
+            console.log("Setting up plot function...")
+
+            def plot_model(event=None):
+                console.log("Button clicked.")
+                try:
+                    a = float(document.getElementById("a-input").value)
+                    b = float(document.getElementById("b-input").value)
+                    w = float(document.getElementById("w-input").value)
+                    h = float(document.getElementById("h-input").value)
+
+                    console.log(f"Values entered: a={a}, b={b}, w={w}, h={h}")
+
+                    plot_div = document.getElementById("plot")
+                    plot_div.innerHTML = ""
+                    fig = parameterPlotting(a, b, w, h)
+                    display(fig, target="plot")
+                except Exception as e:
+                    console.error(f"Error plotting model: {e}")
+
+            plot_proxy = create_proxy(plot_model)
+            button = document.getElementById("plot-button")
+            button.addEventListener("click", plot_proxy)
+
+            console.log("Setup complete.")
+
+            # Plot the model with default values when the page loads
+            plot_model()
+
+        asyncio.ensure_future(main())
+    </py-script>
+</body>
+</html>
