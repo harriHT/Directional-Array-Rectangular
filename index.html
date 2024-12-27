@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Recommended meta tags -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Array of Two Rectangular Detectors for Localization of Radioactive Sources</title>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css">
-    <link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- PyScript CSS -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <!-- This script tag bootstraps PyScript -->
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 </head>
 <body>
     <h1>Array of Two Rectangular Detectors for Localization of Radioactive Sources</h1>
@@ -19,10 +21,12 @@
     <input type="number" id="w-input" placeholder="Enter w" step="any" value="7.5">
     <label for="h-input">h: </label>
     <input type="number" id="h-input" placeholder="Enter h" step="any" value="6">
-    <button id="plot-button">Plot Model</button>
-    <div id="plot"></div>
+    </div>
+	<button id="plot-button">Plot Model</button>
+	</div>
+	<div id="plot" class="center-content"></div>
 
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+    <!--script defer src="https://pyscript.net/latest/pyscript.js"></script-->
     <py-config>
         packages = ["matplotlib"]
     </py-config>
@@ -60,8 +64,7 @@
 
                     plot_div = document.getElementById("plot")
                     plot_div.innerHTML = ""
-                    fig = parameterPlotting(a, b, w, h)
-                    display(fig, target="plot")
+                    fig = parameterPlotting(a, b, w, h)    
                 except Exception as e:
                     console.error(f"Error plotting model: {e}")
 
