@@ -1,5 +1,5 @@
 # Geometric model for rectangular detectors in 2x1 array
-# (C) Harri Toivonen, HT Nuclear Oy, 28 May 2024
+# (C) Harri Toivonen, HT Nuclear Oy, 27 Dec 2024
 # Documentation: Array of two spectrometers for source directional estimation, HT 28 May 2024
 
 def parameterPlotting(a, b, w, h):
@@ -16,12 +16,12 @@ def parameterPlotting(a, b, w, h):
                 y_theoretical[i] = 0
         return y_theoretical
 
-    figureText = '\n2x1 Array of Rectangular Detectors with a Shield between the Detectors\n'
+    figureText = 'Source direction using a shield between two Detectors\n'
     x = np.arange(0, 91)
     theta = x * np.pi / 180
 
     figDirection = plt.figure(num='Rectangular geometry', figsize=[11, 9])
-    figDirection.suptitle(figureText + '\nGeometric model: R = [(a + w) * cos(theta) - h * sin(theta)] / [a * cos(theta) + b * sin(theta)]')
+    figDirection.suptitle(figureText + '\nGeometric model: R = [(a + w) * cos(theta) - h * sin(theta)] / [a * cos(theta) + b * sin(theta)] \n Function not valid on the insensitive regions (0 or 1)')
     ax1 = plt.subplot(1, 1, 1)
     
     # Clear the axes to avoid over-plotting
@@ -53,4 +53,5 @@ if __name__ == '__main__':
     w = 7.5 
     h = 6
 
-    parameterPlotting(a, b, w, h)
+    fig = parameterPlotting(a, b, w, h)
+    fig.show()
